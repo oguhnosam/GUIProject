@@ -1,745 +1,892 @@
 '''
-Hugo May 
+Hugo May
 fune game version 4
-preparing to integrate user interface
-
+integrating user interface
 '''
+
 
 import os
 import time
 import math
 import random
+import v4_library as libe
+from tkinter import *
+from tkinter import ttk
+from tkinter import PhotoImage
+from PIL import Image, ImageTk
 
-CLEAR = '\n' * 100
+moves = {'up':True, 'down':False, 'left':False, 'right':False}
+player = None
+mainframe = None
+frame2 = None
+info = None
+btn_up = None
+btn_down = None
+btn_left = None
+btn_right = None
+btn_show_stats = None
+btn_back = None
+btn_attack = None
+btn_items = None
+btn_run = None
+new_enemy = None
+player_info = None
+enemy_info = None
 
 
-# start of the room ascii art
+
+#beginning of making the rooms
+
 def rm1():
-    moves = {'up':True, 'down':False, 'left':False, 'right':False}
-    print("xxxxxxxxxx/////////xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx        O        xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    return moves
+    global room1
+    global moves
+    global new_room
+    new_room.grid_remove()
+    new_room = ttk.Label(mainframe, image = room1)
+    new_room.grid(column = 0, row = 0)
+    moves['up'] = True
+    moves['down'] = False
+    moves['left'] = False
+    moves['right'] = False
 
 def rm2():
-    moves = {'up':True, 'down':False, 'left':True, 'right':False}
-    print("xxxxxxxxxx/////////xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("/|||||                 xxxxxx")
-    print("/|||||        O        xxxxxx")
-    print("/|||||                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    return moves
+    global room2
+    global moves
+    global new_room
+    new_room.grid_remove()
+    new_room = ttk.Label(mainframe, image = room2)
+    new_room.grid(column = 0, row = 0)
+    moves['up'] = True
+    moves['down'] = False
+    moves['left'] = False
+    moves['right'] = True
 
 def rm3():
-    moves = {'up':True, 'down':False, 'left':False, 'right':True}
-    print("xxxxxxxxxx/////////xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 |||||/")
-    print("xxxxxx        O        |||||/")
-    print("xxxxxx                 |||||/")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    return moves
-
-def rm4():
-    moves = {'up':True, 'down':True, 'left':False, 'right':False}
-    print("xxxxxxxxxx/////////xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx        O        xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx/////////xxxxxxxxxx")
-    return moves
+    global room3
+    global moves
+    global new_room
+    new_room.grid_remove()
+    new_room = ttk.Label(mainframe, image = room3)
+    new_room.grid(column = 0, row = 0)
+    moves['up'] = True
+    moves['down'] = True
+    moves['left'] = False
+    moves['right'] = True
+    
 
 def rm5():
-    moves = {'up':True, 'down':True, 'left':True, 'right':False}
-    print("xxxxxxxxxx/////////xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("/|||||                 xxxxxx")
-    print("/|||||        O        xxxxxx")
-    print("/|||||                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx/////////xxxxxxxxxx")
-    return moves
+    global room6
+    global moves
+    global new_room
+    new_room.grid_remove()
+    new_room = ttk.Label(mainframe, image = room5)
+    new_room.grid(column = 0, row = 0)
+    moves['up'] = False
+    moves['down'] = False
+    moves['left'] = False
+    moves['right'] = True
 
 def rm6():
-    moves = {'up':True, 'down':True, 'left':False, 'right':True}
-    print("xxxxxxxxxx/////////xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 |||||/")
-    print("xxxxxx        O        |||||/")
-    print("xxxxxx                 |||||/")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx/////////xxxxxxxxxx")
-    return moves
+    global room7
+    global moves
+    global new_room
+    new_room.grid_remove()
+    new_room = ttk.Label(mainframe, image = room6)
+    new_room.grid(column = 0, row = 0)
+    moves['up'] = False
+    moves['down'] = True
+    moves['left'] = False
+    moves['right'] = True
 
 def rm7():
-    moves = {'up':True, 'down':False, 'left':True, 'right':True}
-    print("xxxxxxxxxx/////////xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("/|||||                 |||||/")
-    print("/|||||        O        |||||/")
-    print("/|||||                 |||||/")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    return moves
-    
+    global room8
+    global moves
+    global new_room
+    new_room.grid_remove()
+    new_room = ttk.Label(mainframe, image = room7)
+    new_room.grid(column = 0, row = 0)
+    moves['up'] = False
+    moves['down'] = True
+    moves['left'] = True
+    moves['right'] = True
+
 def rm8():
-    moves = {'up':False, 'down':True, 'left':False, 'right':False}
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx        O        xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx/////////xxxxxxxxxx")
-    return moves
+    global room9
+    global moves
+    global new_room
+    new_room.grid_remove()
+    new_room = ttk.Label(mainframe, image = room8)
+    new_room.grid(column = 0, row = 0)
+    moves['up'] = False
+    moves['down'] = True
+    moves['left'] = False
+    moves['right'] = False
 
 def rm9():
-    moves = {'up':False, 'down':True, 'left':False, 'right':True}
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 |||||/")
-    print("xxxxxx        O        |||||/")
-    print("xxxxxx                 |||||/")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx/////////xxxxxxxxxx")
-    return moves
-    
+    global room10
+    global moves
+    global new_room
+    new_room.grid_remove()
+    new_room = ttk.Label(mainframe, image = room9)
+    new_room.grid(column = 0, row = 0)
+    moves['up'] = False
+    moves['down'] = True
+    moves['left'] = True
+    moves['right'] = False
+
 def rm10():
-    moves = {'up':False, 'down':True, 'left':True, 'right':False}
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("/|||||                 xxxxxx")
-    print("/|||||        O        xxxxxx")
-    print("/|||||                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx/////////xxxxxxxxxx")
-    return moves
+    global room1
+    global moves
+    global new_room
+    new_room.grid_remove()
+    new_room = ttk.Label(mainframe, image = room10)
+    new_room.grid(column = 0, row = 0)
+    moves['up'] = True
+    moves['down'] = False
+    moves['left'] = True
+    moves['right'] = True
 
 def rm11():
-    moves = {'up':False, 'down':True, 'left':True, 'right':True}
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("/|||||                 |||||/")
-    print("/|||||        O        |||||/")
-    print("/|||||                 |||||/")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx/////////xxxxxxxxxx")
-    return moves
-    
+    global room11
+    global moves
+    global new_room
+    new_room.grid_remove()
+    new_room = ttk.Label(mainframe, image = room11)
+    new_room.grid(column = 0, row = 0)
+    moves['up'] = False
+    moves['down'] = False
+    moves['left'] = True
+    moves['right'] = False
+
 def rm12():
-    moves = {'up':False, 'down':False, 'left':True, 'right':True}
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("/|||||                 |||||/")
-    print("/|||||        O        |||||/")
-    print("/|||||                 |||||/")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    return moves
-    
+    global room12
+    global moves
+    global new_room
+    new_room.grid_remove()
+    new_room = ttk.Label(mainframe, image = room12)
+    new_room.grid(column = 0, row = 0)
+    moves['up'] = True
+    moves['down'] = False
+    moves['left'] = True
+    moves['right'] = False
+
 def rm13():
-    moves = {'up':False, 'down':False, 'left':True, 'right':False}
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("/|||||                 xxxxxx")
-    print("/|||||        O        xxxxxx")
-    print("/|||||                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    return moves
+    global room13
+    global moves
+    global new_room
+    new_room.grid_remove()
+    new_room = ttk.Label(mainframe, image = room13)
+    new_room.grid(column = 0, row = 0)
+    moves['up'] = True
+    moves['down'] = False
+    moves['left'] = True
+    moves['right'] = True
 
 def rm14():
-    moves = {'up':False, 'down':False, 'left':False, 'right':True}
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 |||||/")
-    print("xxxxxx        O        |||||/")
-    print("xxxxxx                 |||||/")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    return moves
+    global room14
+    global moves
+    global new_room
+    new_room.grid_remove()
+    new_room = ttk.Label(mainframe, image = room14)
+    new_room.grid(column = 0, row = 0)
+    moves['up'] = False
+    moves['down'] = False
+    moves['left'] = True
+    moves['right'] = True
 
-#list of rooms that dont have a down movement
-def no_downs():
-    num = random.randint(1,7)
-    if num == 1:
-        moves = rm1()
-    elif num == 2:
-        moves = rm2()
-    elif num == 3:
-        moves = rm3()
-    elif num == 4:
-        moves = rm7()
-    elif num == 5:
-        moves = rm12()
-    elif num == 6:
-        moves = rm13()
-    elif num == 7:
-        moves = rm14()
+def rm15():
+    global room15
+    global moves
+    global new_room
+    new_room.grid_remove()
+    new_room = ttk.Label(mainframe, image = room15)
+    new_room.grid(column = 0, row = 0)
+    moves['up'] = True
+    moves['down'] = True
+    moves['left'] = False
+    moves['right'] = False
+#end of making rooms
+
+
+
+#creates a new random enemy
+def generate_enemy():
+    global player
+    global new_enemy
+    en_type = random.randint(1,4)
+    if en_type != 4:
+        new_enemy = libe.enemy(level = player.level, type = en_type)
     else:
-        print('no downs broke')
-    return moves
+        new_enemy = libe.goblin(level = player.level, type = en_type)
+
+#hides the movement buttons
+def hide_buttons():
+    global player
+    global info
+    global new_room
+    global mainframe
+    global btn_up
+    global btn_down
+    global btn_left
+    global btn_right
+    global btn_show_stats
+    global btn_back
+
+    #hides controller buttons
+    btn_show_stats.grid_remove()
+    btn_up.grid_remove()
+    btn_down.grid_remove()
+    btn_left.grid_remove()
+    btn_right.grid_remove()
+
+    #hides main display elements
+    new_room.grid_remove()
+    info.grid_remove()
+
+#shows the hidden buttons
+def restore_buttons():
+    global new_room
+    global btn_up
+    global btn_down
+    global btn_left
+    global btn_right
+    global btn_show_stats
+
+    btn_show_stats.grid(row = 2, column = 0, columnspan = 2)
+    btn_up.grid(column = 0, row = 0)
+    btn_down.grid(column = 1, row = 0)
+    btn_left.grid(column = 0, row = 1)
+    btn_right.grid(column = 1, row = 1)
+    new_room.grid(row = 0, column = 0)
+
+#damages the player
+def enemy_turn():
+    global player
+    global new_enemy
+    global info
+    global info2
+    global damage_taken
+
+    damage = new_enemy.attack
+
+    high_roll = int(damage*.2)
+    low_roll = int(damage*-.15)
+
+    damage += random.randint(low_roll, high_roll)
+
+    if random.randint(0, 12) == 1:
+        crit = True
+    else:
+        crit = False
+
+    if crit:
+        damage *= 2
+
+    if random.randint(1, 15) == 1:
+        miss = True
+    else:
+        miss = False
     
-# list of rooms that don't have an up move
-def no_ups():
-    num = random.randint(1,7)
-    if num == 1:
-        moves = rm8()
-    elif num == 2:
-        moves = rm9()
-    elif num == 3:
-        moves = rm10()
-    elif num == 4:
-        moves = rm11()
-    elif num == 5:
-        moves = rm12()
-    elif num == 6:
-        moves = rm13()
-    elif num == 7:
-        moves = rm14()
+
+    info2.grid_remove()
+    if miss:
+        info2 = ttk.Label(mainframe, text = 'The enemy lunged at you but missed!')
     else:
-        print('no ups broke')
-    return moves
-
-# list of rooms that don't have a right move
-def no_rights():
-    num = random.randint(1,7)
-    if num == 1:
-        moves = rm1()
-    elif num == 2:
-        moves = rm2()
-    elif num == 3:
-        moves = rm4()
-    elif num == 4:
-        moves = rm5()
-    elif num == 5:
-        moves = rm8()
-    elif num == 6:
-        moves = rm10()
-    elif num == 7:
-        moves = rm13()
-    else:
-        print('no rights broke')
-    return moves
-
-# list of rooms that don't have a left move
-def no_lefts():
-    num = random.randint(1,7)
-    if num == 1:
-        moves = rm1()
-    elif num == 2:
-        moves = rm3()
-    elif num == 3:
-        moves = rm4()
-    elif num == 4:
-        moves = rm6()
-    elif num == 5:
-        moves = rm8()
-    elif num == 6:
-        moves = rm9()
-    elif num == 7:
-        moves = rm14()
-    else:
-        print('no lefts broke')
-    return moves
-
-def generate_room(move):
-    if move == 'up':
-        moves = no_downs()
-    elif move == 'down':
-        moves = no_ups()
-    elif move == 'left':
-        moves = no_rights()
-    elif move == 'right':
-        moves = no_lefts()
-    else:
-        print('generate room broken')
-    return moves
-
-def generate_enemy(lvl):
-    '''
-    generates 1 of 4 different enemy types
-    1st is a wolf : high damage medium health low defense
-    2nd is an orc : meduim attack high health medium low defense
-    3rd is an armored orc : medium attack medium high health high defense
-    4th is a goblin : low attack low health no defense but can steal items on hit
-    '''
-
-    en_type = random.randint(0, 3)
-    is_goblin = False
-    if en_type == 0:
-        '''
-        health = 60 + 6 per level
-        attack = 7 + 2 per level
-        defense = 0 + .2 per level
-        '''
-        en_health = 60 + (6 * lvl)
-        en_attack = 7 + (2 * lvl)
-        en_defense = 0 + int(.20 * lvl)
-        print('A wolf appears...')
-
-    elif en_type == 1:
-        '''
-        health = 85 + 9 per level
-        attack = 5 + 1.5 per level
-        defense = 2 + .25 per level
-        '''
-        en_health = 85 + (9 * lvl)
-        en_attack = 5 + int(1.5 * lvl)
-        en_defense = 2 + int(.25 * lvl)
-        print('An orc appears...')
-    elif en_type == 2:
-        '''
-        health = 75 + 7 per level
-        attack = 4 + 1.2 per level
-        defense = 5 + 1.5 per level
-        '''
-        en_health = 75 + (7 * lvl)
-        en_attack = 4 + int(1.2 * lvl)
-        en_defense = 5 + int(1.5 * lvl)
-        print('An orc clad in armor appears...')
-    elif en_type == 3:
-        '''
-        health = 50 + 5 per level
-        attack = 3 + 1.2 per level
-        defense = 0
-        '''
-        is_goblin == True
-        en_health = 50 + (5 * lvl)
-        en_attack = 3 + int(1.2 * lvl)
-        en_defense = 0
-
-    return en_health, en_attack, en_defense, is_goblin
-
-
-'''
-In the event the player wants to attack the program must calculate a few things
-if the player can land the attack based on a hardcoded accuracy
-how much damage the player will do based on a random number between a floor 15% lower and 20% higher than the player's attack
-how much damage is negated by enemy defense
-whether or not the player will land a critical strike, doubling damage, based on a hardcoded chance of 1/7
-how much damage is boosted by potions
-whether of not the player deals more damage than needed to kill the enemy
-
-'''
-def player_attack(en_health, en_defense, attack, damage_boost):
-    ext_damage = 0
-    accuracy = random.randint(0,15)
-    if accuracy == 1:
-        print('You tried to attack but missed...')
-    else:
-        '''
-        to add variety within the game the player will not do a set amount of damage each hit
-        instead the player will deal anywhere between 15% lower or 20% higher than their actual damage stat
-        '''
-        high = attack * .2
-        low = attack * -.15
-        divr = random.randint(int(low), int(high))
-
-        #removes 1 point of damage for every 2 points of defense
-        damage = attack + divr - int(en_defense/2)
-
-        #tries for a critical hit
-        crit = random.randint(0,7)
-        if crit == 1:
-            damage *= 2
-            print('Critical Hit!')
-        
-        #multiplies the damage by the damage boost variable
-        damage *= damage_boost
-
-        #truncates the damage delt to the enemy and subtracts it from the enemy's health
-        damage = int(damage)
-        en_health -= damage
-
-        '''
-        checks to see if the player has overkilled the enemy
-        this amount of extra damage will go towards the player's exp count
-        '''
-        if en_health < 0:
-            ext_damage = abs(en_health)
-
-        print('The enemy took', damage, 'damage!')
-
-        return en_health, ext_damage
-
-def player_use_item(max_health, health, attack, items, en_health, en_defense, last_player_action, potion_sickness, d_boost, d_boost_timer):
-    for i in items:
-        #adds an s to the prompt if needed
-        if items[i] == 1:
-            print('You have', items[i], i)
+        if not crit:
+            info2 = ttk.Label(mainframe, text = f'The enemy did {damage} damage!')
         else:
-            print(f'You have {items[i]} {i}s')
-    #takes the player input on which item they want
-    choice = input('What item would you like to use? (enter cancel to exit): ').lower()
+            info2 = ttk.Label(mainframe, text = f'The enemy did {damage} damage!\nA cricical hit!')
 
-    #makes sure that the player entered a valid item
-    if choice in items:
+    info2.grid(row = 2, column = 0, columnspan = 2)
 
-        #makes sure that the player has one of the items they chose
-        if items[choice] > 0:
-            #berry : +15 health
-            if choice == 'berry':
-                health += 15
-                if health > max_health:
-                    health = max_health
-            
-            #bandage : +15% health
-            elif choice == 'bandages':
-                health += int(max_health * .15)
-                if health > max_health:
-                    health = max_health
 
-            #lesser healing potion : +25% health
-            #3 round potion sickness after use
-            elif choice == 'lesser healing potion' and potion_sick < 1:
-                health += int(max_health * .25)
-                if health > max_health:
-                    health = max_health
-                potion_sick = 4
-            
-            #lesser damage potion : +20% damage for 2 turns
-            #4 round potion sickness after use
-            elif choice == 'lesser damage potion' and potion_sick < 1:
-                d_boost = 1.2
-                d_boost_timer = 3
-                potion_sick = 5
+    player.stats['Health'] -= damage
+    damage_taken += damage
 
-            #health potion : +50% health
-            #5 round potion sickness after use
-            elif choice == 'health potion' and potion_sick < 1:
-                health += int(max_health * .5)
-                if health > max_health:
-                    health = max_health
-                potion_sick = 6
-            #damage potion : +50% damage for 3 turns
-            #7 round potion sickness after use
-            elif choice == 'damage potion' and potion_sick < 1:
-                d_boost = 1.5
-                d_boost_timer = 4
-                potion_sick = 8
-        #in the event the player has none of the item they selected
-        else:
-            print('You do not have any of that item')
-            player_use_item(max_health, health, attack, items, en_health, en_defense, last_player_action, potion_sickness, d_boost, d_boost_timer)
-        
-        #if the player has selected a damage potion
-        if 'damage' in choice:
-            print('You will deal', d_boost, 'times damage for', d_boost_timer - 1, 'turns.')
-        
-        #if the player has selected a potion
-        if 'potion' in choice:
-            print('You have potion sickness for', potion_sick - 1, 'turns.')
+#grants the player exp based on the enemy's strength, damage taken, and extra damage dealt
+def end_combat():
+    global player
+    global new_enemy
+    global mainframe
+    global player_info
+    global enemy_info
+    global enemy_picture
+    global enemy_max_health
+    global info
+    global info2
+    global new_room
+    global over_damage
+    global damage_taken
+
+    info.grid_remove()
+    info2.grid_remove()
+    player_info.grid_remove()
+    enemy_info.grid_remove()
+    enemy_picture.grid_remove()
+
+    new_room.grid(row = 0, column = 0)
+
+    restore_buttons()
+
+    exp_gain = int(enemy_max_health/2 + over_damage + damage_taken/5)
+
+    player.stats['Exp'] += exp_gain
+
+    if player.stats['Exp'] > player.stats['Exp Requirement']:
+        player.stats['Exp'] -= player.stats['Exp Requirement']
+        player.stats['Exp Requirement'] = int(player.stats['Exp Requirement'] * 1.2)
+        player.level += 1
+        player.stats['Attack'] += 2
+        player.stats['Max Health'] += 5
+        player.stats['Health'] = player.stats['Max Health']
+        info2 = ttk.Label(mainframe, text = 'You leveled up!')
+        info2.grid(column = 0, row = 2)
     
-    #retries the turn if the player does not want to use an item
-    elif choice == 'cancel':
-        player_turn(max_health, health, attack, items, en_health, en_defense, last_player_action, potion_sickness, d_boost, d_boost_timer)
+    info = ttk.Label(mainframe, text = f'You defeated the {new_enemy.type}!\nYou gained {exp_gain} Exp!')
+    info.grid(row = 1, column = 0)
+
+#closes both windows
+def quit_game():
+    global controller
+    global room
+
+    room.destroy()
+    controller.destroy()
+
+#restarts the game
+def play_again():
+    global btn_quit
+    global btn_play_again
+    global info
+
+    btn_quit.grid_remove()
+    btn_play_again.grid_remove()
+    info.grid_remove()
+
+    beginning()
+
+#if the player has died they can choose to end the game or try again
+def end_game():
+    global player
+    global info
+    global player_info
+    global enemy_info
+    global enemy_picture
+    global info2
+    global mainframe
+    global frame2
+    global btn_quit
+    global btn_play_again
+    player_info.grid_remove()
+    enemy_info.grid_remove()
+    enemy_picture.grid_remove()
+    info2.grid_remove()
+    info.grid_remove()
+    if player.stats['Health'] < 1:
+        info = ttk.Label(mainframe, text = f'You died.\nThe enemy had {new_enemy.health} health left.\nYou were level {player.level}.')
+        info.grid(row = 0, column = 0)
+        btn_quit = ttk.Button(frame2, text = 'Quit', command = quit_game)
+        btn_play_again = ttk.Button(frame2, text = 'Play Again', command = play_again)
+        btn_quit.grid(row = 0, column = 1)
+        btn_play_again.grid(row = 0, column = 0)
+
+
     
-    #in the event the player selected an invalid item
+#damages the enemy based on the player's attack stat and a random floor and celing
+def player_attack():
+    global player
+    global new_enemy
+    global mainframe
+    global player_info
+    global enemy_info
+    global info
+    global btn_attack
+    global btn_items
+    global btn_run
+    global over_damage
+
+    btn_attack.grid_remove()
+    btn_items.grid_remove()
+    btn_run.grid_remove()
+    
+    damage = player.stats['Attack']
+
+    high_roll = int(damage*.2)
+    low_roll = int(damage*-.15)
+
+    damage += random.randint(low_roll, high_roll)
+
+    if random.randint(0, 8) == 1:
+        crit = True
     else:
-        print('Invalid input, try again.')
-        player_use_item(items, max_health, health, potion_sick, d_boost, d_boost_timer)
+        crit = False
 
-#1/7 chance to run away
+    if crit:
+        damage *= 2
+
+    if random.randint(1, 15) == 1:
+        miss = True
+    else:
+        miss = False
+    
+
+    info.grid_remove()
+    if miss:
+        info = ttk.Label(mainframe, text = 'You swung your sword but missed!')
+    else:
+        info = ttk.Label(mainframe, text = f'You did {damage} damage!')
+    info.grid(row = 1, column = 0, columnspan = 2)
+
+
+    new_enemy.health -= damage
+
+
+    if not new_enemy.health < 1:
+        enemy_turn()
+        player_turn()
+    else:
+        over_damage = abs(new_enemy.health)
+        end_combat()
+
+    
+#will allow the player to use the items they have collected
+def player_use_item():
+    global btn_back
+    global btn_attack
+    global btn_run
+    global btn_items
+
+    btn_attack.grid_remove()
+    btn_run.grid_remove()
+    btn_items.grid_remove()
+
+    btn_back = ttk.Button(frame2, text = 'Back', command = player_turn)
+    btn_back.grid(row = 0, column = 0)
+
+#will allow the player to run from the fight
 def player_run():
-    run = random.rand_int(0,6)
-    if run == 0:
-        print('You got away safely.')
-        return True
+    pass
+
+#creates the player's combat actions
+def player_turn():
+    global frame2
+    global btn_attack
+    global btn_items
+    global btn_run
+    global btn_back
+    global player_info
+    global enemy_info
+    global enemy_max_health
+
+
+    if btn_back.winfo_ismapped:
+        btn_back.grid_remove()
+
+    if player.stats['Health'] < 1:
+        end_game()
     else:
-        print('You couldn\'t get away.')
-        return False
-
-#player chooses what they will do during their turn
-def player_turn(max_health, health, attack, items, en_health, en_defense, last_player_action, potion_sickness, d_boost, d_boost_timer):
+        btn_attack.grid(row = 0, column = 0)
+        btn_items.grid(row = 0, column = 1)
+        btn_run.grid(row = 1, column = 0, columnspan = 2)
+        player_info.grid_remove()
+        enemy_info.grid_remove()
+        player_info = ttk.Label(mainframe, text =f'You:\nHealth: {player.stats['Health']}/{player.stats['Max Health']}\nDefense: {player.stats['Defense']}')
+        enemy_info = ttk.Label(mainframe, text = f'Enemy:\nHealth: {new_enemy.health}/{enemy_max_health}\nDefense: {new_enemy.defense}')
+        player_info.grid(row = 3, column = 0)
+        enemy_info.grid(row = 3, column = 1)
     
-    ran = False
-    
-    player_choice = input('Do you want to attack (attack), use an item (item), run (run), or preform the previous action (press enter): ').lower()
-    if player_choice == '' or player_choice == 'attack' or player_choice == 'item' or player_choice == 'run':
-        if player_choice != '':
-            last_player_action = player_choice
-        if last_player_action == 'attack':
-            en_health = player_attack(en_health, en_defense, attack, d_boost)
-        elif last_player_action == 'item':
-            player_use_item(max_health, health, attack, items, en_health, en_defense, last_player_action, potion_sickness, d_boost, d_boost_timer)
-        else:
-            ran = player_run()    
-    else:
-        #validates recalls the function if the player entered an invalid input
-        print('Invalid input, try again.')
-        health, items, last_player_action, potion_sickness, d_boost, d_boost_timer, ran = player_turn(max_health, health, attack, items, en_health, en_defense, last_player_action, potion_sickness, d_boost, d_boost_timer)
-    
-    '''
-    if the player is still potion sick the game removes a count of potion sickness and checks if it was a damage potion. 
-    If so the program also removes a count of the damage boost timer
-    '''
-    if potion_sickness > 0:
-        potion_sickness -=1
-        if d_boost_timer > 0:
-            d_boost_timer -=1
-            if d_boost_timer == 0:
-                d_boost = 1
 
+#creates a new enemy and begins combat
+def combat():
+    global player
+    global new_enemy
+    global enemies
+    global orc
+    global armored_orc
+    global goblin
+    global wolf
+    global player_info
+    global enemy_info
+    global enemy_max_health
+    global info2
+    global enemy_picture
+    global damage_taken
+    damage_taken = 0
+    info2 = ttk.Label(mainframe, text = '')
+    player_info = ttk.Label(mainframe, text = '')
+    enemy_info = ttk.Label(mainframe, text = '')
+    hide_buttons()
+    generate_enemy()
+    enemy_max_health = new_enemy.health
+    enemy_picture = ttk.Label(mainframe, image = enemies[new_enemy.type])
+    enemy_picture.grid(row = 0, column = 0, columnspan = 2)
+    player_turn()
 
-    #returns all variables that can possibly change in this function
-    return health, items, last_player_action, potion_sickness, d_boost, d_boost_timer, ran    
-        
-
-#The enemy will attack unless it is a goblin
-#if the enemy is a goblin there is a chance for it to steal one of the items that the player has the most of
-def en_turn(en_health, health, defense, en_attack, is_goblin):
-    print('yippee')
-
-def combat(end_game, health, max_health, attack, defense, items, exp, max_exp, level):
-    '''
-    creates the enemy and enemy type
-    sets the en_max_health variable the the enemy's starting health
-    this is so that the program can calculate how much exp the player should recieve
-    '''
-    en_health, en_attack, en_defense, is_goblin = generate_enemy(level)
-    en_max_health = en_health
-    
-    '''
-    initializes the players combat variables
-    '''
-    last_player_action = None
-    run = False   
-    d_boost_timer = 0
-    d_boost = 1
-    potion_sickness = 0
-
-
-    while en_health > 0 and health > 0 and not(run):
-        print('You:', health,'/',max_health,'HP\nEnemy',en_health,'/',en_max_health,'HP')
-        health, items, last_player_action, potion_sickness, d_boost, d_boost_timer, run = player_turn(max_health, health, attack, items, en_health, en_defense, last_player_action, potion_sickness, d_boost, d_boost_timer)
-        en_turn()
-        time.sleep(2)
-        print(CLEAR)
-    return end_game, health, max_health, attack, defense, items, exp, max_exp, level
-
-def generate_item(items, level):
+#randomly selects an item and gives it to the player
+def generate_item():
+    global player
+    global info
+    global mainframe
     item = random.randint(0,6)
     if item == 0:
-        items['berry'] += 1
-        print("You found a berry!")
+        player.inventory['berry'] += 1
+        info.grid_remove()
+        info = ttk.Label(mainframe, text = 'You found a berry!')
+        info.grid(column = 0, row = 1)
     elif item == 1:
-        items['bandage'] += 1
-        print('You found a bandage!')
+        player.inventory['bandage'] += 1
+        info.grid_remove()
+        info = ttk.Label(mainframe, text = 'You found some bandages!')
+        info.grid(column = 0, row = 1)
     elif item == 2:
-        items['lesser healing potion'] += 1
-        print('You found a lesser healing potion!')
+        player.inventory['lesser healing potion'] += 1
+        info.grid_remove()
+        info = ttk.Label(mainframe, text = 'You found a lesser healing potion!')
+        info.grid(column = 0, row = 1)
     elif item == 3:
-        items['lesser damage potion'] += 1
-        print('You found a lesser damage potion!')
-    elif item == 4 and level >= 15:
-        items['healing potion'] += 1
-        print('You found a healing potion')
-    elif item == 5 and level >= 15:
-        items['damage potion'] += 1
-        print('You found a damage potion!')
+        player.inventory['lesser damage potion'] += 1
+        info.grid_remove()
+        info = ttk.Label(mainframe, text = 'You found a lesser damage potion!')
+        info.grid(column = 0, row = 1)
+    elif item == 4 and player.level >= 15:
+        player.inventory['healing potion'] += 1
+        info.grid_remove()
+        info = ttk.Label(mainframe, text = 'You found a healing potion!')
+        info.grid(column = 0, row = 1)
+    elif item == 5 and player.level >= 15:
+        player.inventory['damage potion'] += 1
+        info.grid_remove()
+        info = ttk.Label(mainframe, text = 'You found a damage potion!')
+        info.grid(column = 0, row = 1)
     else:
-        print('An empty room...')
-    return items
+        info.grid_remove()
+        info = ttk.Label(mainframe, text = 'An empty room...')
+        info.grid(column = 0, row = 1)
 
-def new_room(end_game, health, max_health, attack, defense, items, exp, max_exp, level, move):
-    room = random.randint(0, 4)
-    if room < 2:
-        print("An empty room...")
-    elif room == 3:
-        items = generate_item(items, level)
+#creates a new room and decided what will happen with it, along with restoring 5 percent of the player's health
+def room_event():
+    global info
+    global mainframe
+    global player
+
+    player.stats['Health'] += int(player.stats['Max Health'] *.05)
+    if player.stats['Health'] > player.stats['Max Health']:
+        player.stats['Health'] = player.stats['Max Health']
+
+    num = random.randint(1,4)
+    if num == 1:
+        info.grid_remove()
+        info = ttk.Label(mainframe, text = 'An empty room...')
+        info.grid(column = 0, row = 1)
+    elif num == 2 or num == 3:
+        info.grid_remove()
+        combat()
+    elif num == 4:
+        info.grid_remove()
+        generate_item()
+
+
+#checks if the player can move up and if so they move into a new room
+def try_up():
+    global moves
+    global info
+    global mainframe
+    global info2
+    info2.grid_remove()
+
+    if moves['up']:
+        num = random.randint(1,7)
+        if num == 1:
+            rm1()
+        elif num == 2:
+            rm2()
+        elif num == 3:
+            rm5()
+        elif num == 4:
+            rm11()
+        elif num == 5:
+            rm12()
+        elif num == 6:
+            rm13()
+        elif num == 7:
+            rm14()
+        info.grid_remove()
+        room_event()
     else:
-        end_game, health, max_health, attack, defense, items, exp, max_exp, level = combat(end_game, health, max_health, attack, defense, items, exp, max_exp, level)
-    moves = generate_room(move)
-    move = player_movement(moves)
-    return end_game, health, max_health, attack, defense, items, exp, max_exp, level, move
+        info.grid_remove()
+        info = ttk.Label(mainframe, text = 'You cant go that way!')
+        info.grid(column = 0, row = 1)
 
-def valid_input(moves, player_move):
-    if player_move in moves:    
-        if moves[player_move]:
-            return True
-        else:
-            print('You can\'t go that way')
-            return False
+
+#checks if the player can move down and if so they move into a new room
+def try_down():
+    global moves
+    global info
+    global mainframe
+    global info2
+    info2.grid_remove()
+
+    if moves['down']:
+        num = random.randint(1,7)
+        if num == 1:
+            rm5()
+        elif num == 2:
+            rm6()
+        elif num == 3:
+            rm7()
+        elif num == 4:
+            rm8()
+        elif num == 5:
+            rm9()
+        elif num == 6:
+            rm11()
+        elif num == 7:
+            rm14()
+        info.grid_remove()
+        room_event()
     else:
-        print('Invalid input try again.')
-        return False
+        info.grid_remove()
+        info = ttk.Label(mainframe, text = 'You cant go that way!')
+        info.grid(column = 0, row = 1)
 
-def player_movement(moves):
-    player_move = input("Enter which direction would you like to move. \n(up, down, left, right)\n_______________\n")
-    player_move = player_move.lower()
-    while not(valid_input(moves, player_move)):
-        player_move = input("Enter which direction would you like to move. \n(up, down, left, right)\n_______________\n")
-    return player_move
+#checks if the player can move left and if so they move into a new room
+def try_left():
+    global moves
+    global info
+    global mainframe
+    global info2
+    info2.grid_remove()
 
-def starting_room():
-    moves = {'up':True, 'down':False, 'left':False, 'right':False}
-    print("xxxxxxxxxx/////////xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxxxxxx_________xxxxxxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx        O        xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxx                 xxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    move = player_movement(moves)
-    return move
+    if moves['left']:
+        num = random.randint(1,7)
+        if num == 1:
+            rm1()
+        elif num == 2:
+            rm8()
+        elif num == 3:
+            rm9()
+        elif num == 4:
+            rm11()
+        elif num == 5:
+            rm12()
+        elif num == 6:
+            rm10()
+        elif num == 7:
+            rm15()        
+        info.grid_remove()
+        room_event()
+    else:
+        info.grid_remove()
+        info = ttk.Label(mainframe, text = 'You cant go that way!')
+        info.grid(column = 0, row = 1)
 
+#checks if the player can move right and if so they move into a new room
+def try_right():
+    global moves
+    global info
+    global mainframe
+    global info2
+    info2.grid_remove()
+
+    if moves['right']:
+        num = random.randint(1,7)
+        if num == 1:
+            rm1()
+        elif num == 2:
+            rm2()
+        elif num == 3:
+            rm3()
+        elif num == 4:
+            rm5()
+        elif num == 5:
+            rm6()
+        elif num == 6:
+            rm8()
+        elif num == 7:
+            rm15()
+        info.grid_remove()
+        room_event() 
+    else:
+        info.grid_remove()
+        info = ttk.Label(mainframe, text = 'You cant go that way!')
+        info.grid(column = 0, row = 1)
+
+#restores the buttons and gui and removes the player stats
+def hide_stats():
+    global info
+    global new_room
+    global mainframe
+    global btn_up
+    global btn_down
+    global btn_left
+    global btn_right
+    global btn_show_stats
+    global btn_back
+
+    #hides back button and stats
+    btn_back.grid_remove()
+    info.grid_remove()
+
+    #restores buttons and gui
+    restore_buttons()
+
+
+#shows the player's attributes and stats
+def show_stats():
+    global player
+    global info
+    global new_room
+    global mainframe
+    global btn_up
+    global btn_down
+    global btn_left
+    global btn_right
+    global btn_show_stats
+    global btn_back
+
+    #hides buttons
+    hide_buttons()
+
+    #displays the stats
+    info = ttk.Label(mainframe, text = str(player))
+    info.grid(row = 1, column = 0)
+
+    #makes back button
+    btn_back = ttk.Button(frame2, text = "Back", command = hide_stats)
+    btn_back.grid(row = 0, column = 0)
+
+#creates the controller and all of the buttons it can use
+def make_controller():
+    global frame2
+    global btn_up
+    global btn_down
+    global btn_left
+    global btn_right
+    global btn_show_stats
+    global btn_attack
+    global btn_items
+    global btn_run
+    global btn_back
+    
+    btn_up = ttk.Button(frame2, text = 'Up', command = try_up)
+    btn_up.grid(column = 0, row = 0)
+    btn_down = ttk.Button(frame2, text = 'Down', command = try_down)
+    btn_down.grid(column = 1, row = 0)
+    btn_left = ttk.Button(frame2, text = 'Left', command = try_left)
+    btn_left.grid(column = 0, row = 1)
+    btn_right = ttk.Button(frame2, text = 'Right', command = try_right)
+    btn_right.grid(column = 1, row = 1)
+    btn_show_stats = ttk.Button(frame2, text = "Show Stats", command = show_stats)
+    btn_show_stats.grid(column = 0, row = 2, columnspan = 2)
+    btn_attack = ttk.Button(frame2, text = 'Attack', command = player_attack)
+    btn_items = ttk.Button(frame2, text = 'Items', command = player_use_item)
+    btn_run = ttk.Button(frame2, text = 'Run', command = player_run)
+    btn_back = ttk.Button(frame2, text = "Back", command = hide_stats)
+
+
+#creates a player object and initiates the first room
 def beginning():
-    end_game = None
-    health = 100
-    max_health = 100
-    attack = 7
-    defense = 0
+    global player
+    global frame2
+    global mainframe
+    global room
+    global controller
+    global room1
+    global new_room
+    global info
+    global info2
+    global start
+    start.grid_remove()
+
     items = {'berry':0, 'bandage':0, 'lesser healing potion':0, 'lesser damage potion':0, 'healing potion':0, 'damage potion':0}
-    exp = 0
-    max_exp = 50
-    level = 1
-    move = starting_room()
-    moves = {'up':False, 'down':False, 'left':False, 'right':False}
-    while health > 0 and end_game != 1:
-        if health < max_health:
-            health += int(max_health * .05)
-            if health > max_health:
-                health = max_health
-        end_game, health, max_health, attack, defense, items, exp, max_exp, level, move = new_room(end_game, health, max_health, attack, defense, items, exp, max_exp, level, move)
-        print(CLEAR)
+    player = libe.player(stats = {"Health" : 100, "Max Health" : 100, "Attack" : 7, "Defense" : 0, "Exp Requirement" : 50, "Exp" : 0}, inventory = items, level = 1)
+    
+
+    new_room = ttk.Label(mainframe, image = room1)
+    new_room.grid(column = 0, row = 0)
+    info = ttk.Label(mainframe, text = "This is the first room\nPlease select your move.")
+    info.grid(column = 0, row = 1)
+    info2 = ttk.Label(mainframe, text = '')
+    info2.grid(column = 0, row = 2)
+    make_controller()
+    
+
+#begins the game and initiates the 2 game windows
 
 def main():
-    start = None
-    print("Welcome to fune 4\nThis rendition focuses on incorporating a user interface into gameplay\nHave fun!")
-    start = input("Press enter to begin: ")
-    while start != '':
-        start = input("Press ONLY enter to begin")
-    beginning()
+    #accesses needed variables
+    global mainframe
+    global frame2
+    global room
+    global controller
+    global room1
+    global room2
+    global room3
+    global room4
+    global room5
+    global room6
+    global room7
+    global room8
+    global room9
+    global room10
+    global room11
+    global room12
+    global room13
+    global room14
+    global room15
+    global orc
+    global armored_orc
+    global goblin
+    global wolf
+    global enemies
+    global start
+    #creates the main window
+    room = Tk()
+    room.title("Current Room")
+
+    mainframe = ttk.Frame(room, padding = '12 12 12 12')
+    mainframe.grid(column = 0, row = 0, sticky = (N, W, S, E))
+    room.columnconfigure(0, weight = 1)
+    room.rowconfigure(0, weight = 1)
     
+    #creates the controller window   
+    controller = Tk()
+    controller.title("Controller")
+
+    frame2 = ttk.Frame(controller, padding = '12 12 12 12')
+    frame2.grid(column = 0, row = 0, sticky = (N, W, S, E))
+    controller.columnconfigure(0, weight = 1)
+    controller.rowconfigure(0, weight = 1)
+
+
+#start button
+    start = ttk.Button(frame2, text = "Start", command = beginning)
+    start.grid(column = 0, row = 0)
+
+#defining the rooms as images
+    room1 = PhotoImage(file = "rm_1.png")
+    room2 = PhotoImage(file = "rm_2.png")
+    room3 = PhotoImage(file = "rm_3.png")
+    room4 = PhotoImage(file = "rm_4.png")
+    room5 = PhotoImage(file = "rm_5.png")
+    room6 = PhotoImage(file = "rm_6.png")
+    room7 = PhotoImage(file = "rm_7.png")
+    room8 = PhotoImage(file = "rm_8.png")
+    room9 = PhotoImage(file = "rm_9.png")
+    room10 = PhotoImage(file = "rm_10.png")
+    room11 = PhotoImage(file = "rm_11.png")
+    room12 = PhotoImage(file = "rm_12.png")
+    room13 = PhotoImage(file = "rm_13.png")
+    room14 = PhotoImage(file = "rm_14.png")
+    room15 = PhotoImage(file = "rm_15.png")
+    armored_orc = PhotoImage(file = 'armored_orc.png')
+    orc = PhotoImage(file = 'orc.png')
+    goblin = PhotoImage(file = 'goblin.png')
+    wolf = PhotoImage(file = 'wolf.png')
+    enemies = {'orc' : orc, 'armored orc' : armored_orc, 'goblin' : goblin, 'wolf' : wolf}
+
+
+    room.mainloop()
+
 
 main()
